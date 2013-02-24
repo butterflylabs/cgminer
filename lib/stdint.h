@@ -1,3 +1,4 @@
+/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Copyright (C) 2001-2002, 2004-2011 Free Software Foundation, Inc.
    Written by Paul Eggert, Bruno Haible, Sam Steingold, Peter Burwood.
    This file is part of gnulib.
@@ -21,12 +22,12 @@
  * <http://www.opengroup.org/susv3xbd/stdint.h.html>
  */
 
-#ifndef _@GUARD_PREFIX@_STDINT_H
+#ifndef _GL_STDINT_H
 
 #if __GNUC__ >= 3
-@PRAGMA_SYSTEM_HEADER@
+#pragma GCC system_header
 #endif
-@PRAGMA_COLUMNS@
+
 
 /* When including a system file that in turn includes <inttypes.h>,
    use the system <inttypes.h>, not our substitute.  This avoids
@@ -36,7 +37,7 @@
 
 #if defined __BIONIC__ \
     && defined _SYS_TYPES_H_ && !defined __SSIZE_T_DEFINED_
-# @INCLUDE_NEXT@ @NEXT_STDINT_H@
+# include_next <stdint.h>
 #else
 
 /* Get those types that are already defined in other system include
@@ -47,7 +48,7 @@
    for the "fast" types and macros, which we recommend against using
    in public interfaces due to compiler differences.  */
 
-#if @HAVE_STDINT_H@
+#if 1
 # if defined __sgi && ! defined __c99
    /* Bypass IRIX's <stdint.h> if in C89 mode, since it merely annoys users
       with "This header file is to be used only for c99 mode compilations"
@@ -57,39 +58,39 @@
   /* Other systems may have an incomplete or buggy <stdint.h>.
      Include it before <inttypes.h>, since any "#include <stdint.h>"
      in <inttypes.h> would reinclude us, skipping our contents because
-     _@GUARD_PREFIX@_STDINT_H is defined.
+     _GL_STDINT_H is defined.
      The include_next requires a split double-inclusion guard.  */
-# @INCLUDE_NEXT@ @NEXT_STDINT_H@
+# include_next <stdint.h>
 #endif
 
-#if ! defined _@GUARD_PREFIX@_STDINT_H && ! defined _GL_JUST_INCLUDE_SYSTEM_STDINT_H
-#define _@GUARD_PREFIX@_STDINT_H
+#if ! defined _GL_STDINT_H && ! defined _GL_JUST_INCLUDE_SYSTEM_STDINT_H
+#define _GL_STDINT_H
 
 /* <sys/types.h> defines some of the stdint.h types as well, on glibc,
    IRIX 6.5, and OpenBSD 3.8 (via <machine/types.h>).
    AIX 5.2 <sys/types.h> isn't needed and causes troubles.
    MacOS X 10.4.6 <sys/types.h> includes <stdint.h> (which is us), but
    relies on the system <stdint.h> definitions, so include
-   <sys/types.h> after @NEXT_STDINT_H@.  */
-#if @HAVE_SYS_TYPES_H@ && ! defined _AIX
+   <sys/types.h> after <stdint.h>.  */
+#if 1 && ! defined _AIX
 # include <sys/types.h>
 #endif
 
 /* Get LONG_MIN, LONG_MAX, ULONG_MAX.  */
 #include <limits.h>
 
-#if @HAVE_INTTYPES_H@
+#if 1
   /* In OpenBSD 3.8, <inttypes.h> includes <machine/types.h>, which defines
      int{8,16,32,64}_t, uint{8,16,32,64}_t and __BIT_TYPES_DEFINED__.
      <inttypes.h> also defines intptr_t and uintptr_t.  */
 # include <inttypes.h>
-#elif @HAVE_SYS_INTTYPES_H@
+#elif 0
   /* Solaris 7 <sys/inttypes.h> has the types except the *_fast*_t types, and
      the macros except for *_FAST*_*, INTPTR_MIN, PTRDIFF_MIN, PTRDIFF_MAX.  */
 # include <sys/inttypes.h>
 #endif
 
-#if @HAVE_SYS_BITYPES_H@ && ! defined __BIT_TYPES_DEFINED__
+#if 0 && ! defined __BIT_TYPES_DEFINED__
   /* Linux libc4 >= 4.6.7 and libc5 have a <sys/bitypes.h> that defines
      int{8,16,32,64}_t and __BIT_TYPES_DEFINED__.  In libc5 >= 5.2.2 it is
      included by <sys/types.h>.  */
@@ -162,7 +163,7 @@ typedef long int gl_int64_t;
 typedef __int64 gl_int64_t;
 #  define int64_t gl_int64_t
 #  define GL_INT64_T
-# elif @HAVE_LONG_LONG_INT@
+# elif 1
 #  undef int64_t
 typedef long long int gl_int64_t;
 #  define int64_t gl_int64_t
@@ -183,7 +184,7 @@ typedef unsigned long int gl_uint64_t;
 typedef unsigned __int64 gl_uint64_t;
 #  define uint64_t gl_uint64_t
 #  define GL_UINT64_T
-# elif @HAVE_UNSIGNED_LONG_LONG_INT@
+# elif 1
 #  undef uint64_t
 typedef unsigned long long int gl_uint64_t;
 #  define uint64_t gl_uint64_t
@@ -276,7 +277,7 @@ typedef unsigned long int gl_uintptr_t;
    public header files. */
 
 #undef intmax_t
-#if @HAVE_LONG_LONG_INT@ && LONG_MAX >> 30 == 1
+#if 1 && LONG_MAX >> 30 == 1
 typedef long long int gl_intmax_t;
 # define intmax_t gl_intmax_t
 #elif defined GL_INT64_T
@@ -287,7 +288,7 @@ typedef long int gl_intmax_t;
 #endif
 
 #undef uintmax_t
-#if @HAVE_UNSIGNED_LONG_LONG_INT@ && ULONG_MAX >> 31 == 1
+#if 1 && ULONG_MAX >> 31 == 1
 typedef unsigned long long int gl_uintmax_t;
 # define uintmax_t gl_uintmax_t
 #elif defined GL_UINT64_T
@@ -458,7 +459,7 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 /* ptrdiff_t limits */
 #undef PTRDIFF_MIN
 #undef PTRDIFF_MAX
-#if @APPLE_UNIVERSAL_BUILD@
+#if 0
 # ifdef _LP64
 #  define PTRDIFF_MIN  _STDINT_MIN (1, 64, 0l)
 #  define PTRDIFF_MAX  _STDINT_MAX (1, 64, 0l)
@@ -468,32 +469,32 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 # endif
 #else
 # define PTRDIFF_MIN  \
-    _STDINT_MIN (1, @BITSIZEOF_PTRDIFF_T@, 0@PTRDIFF_T_SUFFIX@)
+    _STDINT_MIN (1, 32, 0)
 # define PTRDIFF_MAX  \
-    _STDINT_MAX (1, @BITSIZEOF_PTRDIFF_T@, 0@PTRDIFF_T_SUFFIX@)
+    _STDINT_MAX (1, 32, 0)
 #endif
 
 /* sig_atomic_t limits */
 #undef SIG_ATOMIC_MIN
 #undef SIG_ATOMIC_MAX
 #define SIG_ATOMIC_MIN  \
-   _STDINT_MIN (@HAVE_SIGNED_SIG_ATOMIC_T@, @BITSIZEOF_SIG_ATOMIC_T@, \
-                0@SIG_ATOMIC_T_SUFFIX@)
+   _STDINT_MIN (1, 32, \
+                0)
 #define SIG_ATOMIC_MAX  \
-   _STDINT_MAX (@HAVE_SIGNED_SIG_ATOMIC_T@, @BITSIZEOF_SIG_ATOMIC_T@, \
-                0@SIG_ATOMIC_T_SUFFIX@)
+   _STDINT_MAX (1, 32, \
+                0)
 
 
 /* size_t limit */
 #undef SIZE_MAX
-#if @APPLE_UNIVERSAL_BUILD@
+#if 0
 # ifdef _LP64
 #  define SIZE_MAX  _STDINT_MAX (0, 64, 0ul)
 # else
 #  define SIZE_MAX  _STDINT_MAX (0, 32, 0ul)
 # endif
 #else
-# define SIZE_MAX  _STDINT_MAX (0, @BITSIZEOF_SIZE_T@, 0@SIZE_T_SUFFIX@)
+# define SIZE_MAX  _STDINT_MAX (0, 32, 0u)
 #endif
 
 /* wchar_t limits */
@@ -502,7 +503,7 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
    sequence of nested includes
    <wchar.h> -> <stdio.h> -> <getopt.h> -> <stdlib.h>, and the latter includes
    <stdint.h> and assumes its types are already defined.  */
-#if @HAVE_WCHAR_H@ && ! (defined WCHAR_MIN && defined WCHAR_MAX)
+#if 1 && ! (defined WCHAR_MIN && defined WCHAR_MAX)
   /* BSD/OS 4.0.1 has a bug: <stddef.h>, <stdio.h> and <time.h> must be
      included before <wchar.h>.  */
 # include <stddef.h>
@@ -515,17 +516,17 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #undef WCHAR_MIN
 #undef WCHAR_MAX
 #define WCHAR_MIN  \
-   _STDINT_MIN (@HAVE_SIGNED_WCHAR_T@, @BITSIZEOF_WCHAR_T@, 0@WCHAR_T_SUFFIX@)
+   _STDINT_MIN (0, 32, 0u)
 #define WCHAR_MAX  \
-   _STDINT_MAX (@HAVE_SIGNED_WCHAR_T@, @BITSIZEOF_WCHAR_T@, 0@WCHAR_T_SUFFIX@)
+   _STDINT_MAX (0, 32, 0u)
 
 /* wint_t limits */
 #undef WINT_MIN
 #undef WINT_MAX
 #define WINT_MIN  \
-   _STDINT_MIN (@HAVE_SIGNED_WINT_T@, @BITSIZEOF_WINT_T@, 0@WINT_T_SUFFIX@)
+   _STDINT_MIN (0, 32, 0u)
 #define WINT_MAX  \
-   _STDINT_MAX (@HAVE_SIGNED_WINT_T@, @BITSIZEOF_WINT_T@, 0@WINT_T_SUFFIX@)
+   _STDINT_MAX (0, 32, 0u)
 
 #endif /* !defined __cplusplus || defined __STDC_LIMIT_MACROS */
 
@@ -560,21 +561,21 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 # define INT64_C(x) x##L
 #elif defined _MSC_VER
 # define INT64_C(x) x##i64
-#elif @HAVE_LONG_LONG_INT@
+#elif 1
 # define INT64_C(x) x##LL
 #endif
 #if ULONG_MAX >> 31 >> 31 >> 1 == 1
 # define UINT64_C(x) x##UL
 #elif defined _MSC_VER
 # define UINT64_C(x) x##ui64
-#elif @HAVE_UNSIGNED_LONG_LONG_INT@
+#elif 1
 # define UINT64_C(x) x##ULL
 #endif
 
 /* 7.18.4.2. Macros for greatest-width integer constants */
 
 #undef INTMAX_C
-#if @HAVE_LONG_LONG_INT@ && LONG_MAX >> 30 == 1
+#if 1 && LONG_MAX >> 30 == 1
 # define INTMAX_C(x)   x##LL
 #elif defined GL_INT64_T
 # define INTMAX_C(x)   INT64_C(x)
@@ -583,7 +584,7 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #endif
 
 #undef UINTMAX_C
-#if @HAVE_UNSIGNED_LONG_LONG_INT@ && ULONG_MAX >> 31 == 1
+#if 1 && ULONG_MAX >> 31 == 1
 # define UINTMAX_C(x)  x##ULL
 #elif defined GL_UINT64_T
 # define UINTMAX_C(x)  UINT64_C(x)
@@ -592,6 +593,6 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #endif
 
 #endif /* !defined __cplusplus || defined __STDC_CONSTANT_MACROS */
-#endif /* _@GUARD_PREFIX@_STDINT_H */
+#endif /* _GL_STDINT_H */
 #endif /* !(defined __BIONIC__ && ...)*/
-#endif /* !defined _@GUARD_PREFIX@_STDINT_H && !defined _GL_JUST_INCLUDE_SYSTEM_STDINT_H */
+#endif /* !defined _GL_STDINT_H && !defined _GL_JUST_INCLUDE_SYSTEM_STDINT_H */

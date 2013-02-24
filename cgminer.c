@@ -6701,7 +6701,9 @@ void enable_device(struct cgpu_info *cgpu)
 	mutex_unlock(&devices_lock);
 	if (hotplug_mode) {
 		new_threads += cgpu->threads;
+#ifdef HAVE_CURSES
 		adj_width(mining_threads + new_threads, &dev_width);
+#endif
 	} else {
 		mining_threads += cgpu->threads;
 #ifdef HAVE_CURSES
@@ -6861,6 +6863,11 @@ static void *hotplug_thread(void __maybe_unused *userdata)
 }
 #endif
 
+#ifndef HAVE_PTHREAD_CANCEL
+extern void setup_pthread_cancel_workaround();
+extern struct sigaction pcwm_orig_term_handler;
+#endif
+
 int main(int argc, char *argv[])
 {
 	bool pools_active = false;
@@ -6870,6 +6877,10 @@ int main(int argc, char *argv[])
 	unsigned int k;
 	int i, j;
 	char *s;
+
+#ifndef HAVE_PTHREAD_CANCEL
+	setup_pthread_cancel_workaround();
+#endif
 
 	/* This dangerous functions tramples random dynamically allocated
 	 * variables so do it before anything at all */
@@ -6924,7 +6935,13 @@ int main(int argc, char *argv[])
 	handler.sa_handler = &sighandler;
 	handler.sa_flags = 0;
 	sigemptyset(&handler.sa_mask);
+#ifdef HAVE_PTHREAD_CANCEL
 	sigaction(SIGTERM, &handler, &termhandler);
+#else
+	// Need to let pthread_cancel emulation handle SIGTERM first
+	termhandler = pcwm_orig_term_handler;
+	pcwm_orig_term_handler = handler;
+#endif
 	sigaction(SIGINT, &handler, &inthandler);
 #ifndef WIN32
 	signal(SIGPIPE, SIG_IGN);
@@ -6978,6 +6995,11 @@ int main(int argc, char *argv[])
 
 	if (!config_loaded)
 		load_default_config();
+
+#ifndef HAVE_PTHREAD_CANCEL
+	// Can't do this any earlier, or config isn't loaded
+	applog(LOG_DEBUG, "pthread_cancel workaround in use");
+#endif
 
 	if (opt_benchmark) {
 		struct pool *pool;

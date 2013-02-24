@@ -1,0 +1,91 @@
+Instructions to building BFGMiner for Android.
+Starting notes: I used Ubuntu 
+
+1. Prepare your build environment:
+  - create a folder to store packages (I used ~/devel)
+    This is to have them all in the same place.
+    
+  - create a folder to store built binaries (I used /home/user/build)
+    This is to install them in a separate place.
+  
+  - download and unpack Android NDK (I used android-ndk-r8b-linux-x86)
+    We need the compilers and libraries from the NDK so that our binaries run on the Android platform.
+  
+  - run "./build/tools/make-standalone-toolchain.sh --platform=android-14" inside the Android NDK directory.
+    This will create a self-contained archive (like /tmp/ndk-user/arm-linux-androideabi-4.6.tar.bz2) that
+    contains everything we need to compile packages to target the Android platform. The android-14 parameter
+    specifies that we're bulding for Ice Cream Sandwich (4.0) and above. If you want to target older Android
+    versions, change this parameter.
+  
+  - unpack the archive created by the previous script to a convenient folder (I used /opt)
+    ~ sudo tar xjvf /tmp/ndk-user/arm-linux-androideabi-4.6.tar.bz2 -C /opt
+  
+  - add the folder containing all tools to the PATH
+    ~ export PATH=/opt/arm-linux-androideabi-4.6/bin/:$PATH
+
+2. Go to ~/devel
+cd ~/devel
+
+2. Compile cURL
+    cd ~/devel
+    wget http://curl.haxx.se/download/curl-7.28.1.tar.gz
+    tar xzf curl-7.28.1.tar.gz
+    cd curl-7.28.1/
+    ./configure --host=arm-linux-androideabi --prefix=/home/user/build --without-zlib
+    [edit libtool to not generate shared libraries]
+    make && make install
+
+3. Download and compile jansson
+    cd ~/devel
+    wget http://www.digip.org/jansson/releases/jansson-2.4.tar.gz
+    tar xvf jansson-2.4.tar.gz
+    cd jansson-2.4/
+    ./configure --host=arm-linux-androideabi --prefix=/home/user/build
+    [edit libtool to not generate shared libraries]
+    make && make install
+
+4. Download and compile libusb
+    cd ~/devel
+    wget http://sourceforge.net/projects/libusb/files/libusb-1.0/libusb-1.0.9/libusb-1.0.9.tar.bz2
+    tar xjf libusb-1.0.9.tar.bz2
+    cd tar xjf libusb-1.0.9/
+    ./configure --host=arm-linux-androideabi --prefix=/home/user/build
+    [edit libtool to not generate shared libraries]
+    [patch libusb/core.c according to this gist: https://gist.github.com/3349719]
+    [edit libusb/Makefile and remove -Werror-implicit-function-declaration]
+    make && make install
+    
+4. Download and compile bfgminer
+    cd ~/devel
+    git clone git://github.com/butterflylabs/cgminer.git
+    cd cgminer/
+    LDFLAGS="-L/home/user/build/lib/" LIBS="-lm -llog" CFLAGS="-I/home/user/build/include" PKG_CONFIG_PATH="/home/user/build/lib/pkgconfig/" ./autogen.sh --host=arm-linux-androideabi --prefix=/home/user/build --enable-scrypt --enable-cpumining
+--enable-bitforce --enable-icarus --enable-modminer --enable-ztex --enable-libudev
+
+   
+------------------------------------------------------------------------
+cgminer 2.11.0
+------------------------------------------------------------------------
+
+
+Configuration Options Summary:
+
+  curses.TUI...........: NOT FOUND. TUI support DISABLED
+  OpenCL...............: NOT FOUND. GPU mining support DISABLED
+  scrypt...............: Disabled (needs OpenCL)
+  ADL..................: SDK NOT found, GPU monitoring support DISABLED
+
+  BitForce.FPGAs.......: Enabled
+  Icarus.FPGAs.........: Enabled
+  ModMiner.FPGAs.......: Enabled
+  Ztex.FPGAs...........: Enabled
+  libudev.detection....: no
+
+Compilation............: make (or gmake)
+  CPPFLAGS.............: 
+  CFLAGS...............: -I/home/prelipcean/build/include -I/home/prelipcean/build/include/libusb-1.0  
+  LDFLAGS..............: -L/home/prelipcean/build/lib/ 
+  LDADD................:  -L/home/prelipcean/build/lib -lcurl   -ljansson      -lm  -L/home/prelipcean/build/lib -lusb-1.0  
+
+
+make
